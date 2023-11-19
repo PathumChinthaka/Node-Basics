@@ -7,7 +7,13 @@ app.use(express.urlencoded({extended:true}));
 const mongoose=require("mongoose");
 mongoose.set('strictQuery',false);
 
-const PORT=3000;
+const CONNECTION=process.env.CONNECTION;
+
+if(process.env.NODE_ENV !== "production"){
+  require("dotenv").config();
+}
+
+const PORT=process.env.PORT || 3000;
 
 app.get('/',(req,res)=>{
   res.send("Hello Pathum");
@@ -22,10 +28,10 @@ const start=async()=>{
 
   try{
 
-    await mongoose.connect("mongodb+srv://pathum:KgQjzcmc1eZjOXOm@cluster0.hiwcmgf.mongodb.net/?retryWrites=true&w=majority");
+    await mongoose.connect(CONNECTION);
   
     app.listen(PORT,()=>{
-      console.log("Server is Listning");
+      console.log("Server is Listning on PORT"+PORT);
     });
 
   }catch(error){
