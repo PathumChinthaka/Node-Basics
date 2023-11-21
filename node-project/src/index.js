@@ -7,13 +7,14 @@ app.use(express.urlencoded({extended:true}));
 const mongoose=require("mongoose");
 mongoose.set('strictQuery',false);
 
-const CONNECTION=process.env.CONNECTION;
 
 if(process.env.NODE_ENV !== "production"){
   require("dotenv").config();
 }
 
 const PORT=process.env.PORT || 3000;
+
+const CONNECTION=process.env.CONNECTION;
 
 app.get('/',(req,res)=>{
   res.send("Hello Pathum");
