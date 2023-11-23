@@ -7,22 +7,35 @@ app.use(express.urlencoded({extended:true}));
 const mongoose=require("mongoose");
 mongoose.set('strictQuery',false);
 
+const Customer=require("./models/customer.js");
 
 if(process.env.NODE_ENV !== "production"){
   require("dotenv").config();
 }
 
 const PORT=process.env.PORT || 3000;
-
 const CONNECTION=process.env.CONNECTION;
 
-app.get('/',(req,res)=>{
-  res.send("Hello Pathum");
+const customer=new Customer({
+  name:'pathum',
+  industry:'coding'
 });
 
-app.post("/save",(req,res)=>{
-  console.log(req.body);
-  res.send(req.body);
+customer.save();
+
+app.get('/',(req,res)=>{
+  res.send(customer);
+});
+
+app.get("/customer/getAll",async (req,res)=>{
+  try {
+    //return all cllections from cloud
+    // console.log(await mongoose.connection.db.listCollections().toArray());
+    const result= await Customer.find();
+    res.json({"Customerse":result});
+  } catch (e) {
+    res.status(500).json({error:e.message});
+  }
 });
 
 const start=async()=>{
